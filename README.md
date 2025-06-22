@@ -1,3 +1,94 @@
+# Bhaktinama.com - Book Pandit Appointment
+
+A web application for booking pandit (Hindu priest) appointments and religious services.
+
+## About The Project
+
+Bhaktinama.com is a platform that connects devotees with qualified pandits for religious ceremonies and consultations. Built with Laravel 12.0 framework, the application provides a seamless experience for booking religious services.
+
+## Features
+
+- User authentication and registration
+- Pandit appointment booking system
+- Responsive design with modern UI
+- Secure payment processing
+- User dashboard
+- Admin panel for pandit management
+
+## Tech Stack
+
+- **PHP**: ^8.2
+- **Laravel**: ^12.0
+- **Frontend**: HTML5, CSS3, JavaScript
+- **Database**: MySQL
+- **CSS Framework**: Custom CSS with Flexbox
+- **Icons**: Font Awesome 6.4.0
+
+## Installation
+
+1. Clone the repository
+```bash
+git clone [repository-url]
+```
+
+2. Install PHP dependencies
+```bash
+composer install
+```
+
+3. Create environment file
+```bash
+cp .env.example .env
+```
+
+4. Generate application key
+```bash
+php artisan key:generate
+```
+
+5. Configure your database in `.env` file
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=project
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+6. Run migrations
+```bash
+php artisan migrate
+```
+
+7. Start the development server
+```bash
+php artisan serve
+```
+
+## Environment Configuration
+
+The application uses various environment variables for configuration. Key configurations include:
+- Application settings
+- Database connections
+- Mail settings
+- Session management
+- Cache configuration
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contact
+
+For any queries regarding this project, please reach out to the development team.
+
+## Acknowledgments
+
+- [Laravel](https://laravel.com) - The web framework used
+- [Font Awesome](https://fontawesome.com) - Icons
+- All contributors who have helped in building this project
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
