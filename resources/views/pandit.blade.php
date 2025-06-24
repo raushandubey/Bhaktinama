@@ -34,6 +34,11 @@
     <main>
         <h2 class="page-title"><i class="fa fa-user-tie"></i> Choose Your Pandit</h2>
         <p class="info-text">Select a Pandit for your ritual. You can view their experience, reviews, and more details before making your choice. All our Pandits are verified and highly rated!</p>
+        
+        @auth
+            <div data-user-name="{{ Auth::user()->name }}" data-user-mobile="{{ Auth::user()->mobile }}" style="display:none;"></div>
+        @endauth
+        
         <form id="panditForm">
             <div id="panditCards" class="pandit-cards"></div>
             <button type="submit" class="cta-btn" style="margin-top:2rem;">Proceed</button>

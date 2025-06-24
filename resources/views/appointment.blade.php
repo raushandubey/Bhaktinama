@@ -40,6 +40,9 @@
         </div>
         <div class="form-card animate-card" style="margin-top:2rem;">
             <h2 class="page-title"><i class="fa fa-check-circle"></i> Appointment Confirmation</h2>
+            @auth
+                <div data-user-name="{{ Auth::user()->name }}" data-user-mobile="{{ Auth::user()->mobile }}" style="display:none;"></div>
+            @endauth
             <div id="appointmentDetails"></div>
             <button id="payNowBtn" class="cta-btn">Pay Now</button>
             <div id="paymentBox" style="display:none;">

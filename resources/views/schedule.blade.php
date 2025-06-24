@@ -40,6 +40,10 @@
                 </div>
             @endif
 
+            @auth
+                <div data-user-name="{{ Auth::user()->name }}" data-user-mobile="{{ Auth::user()->mobile }}" style="display:none;"></div>
+            @endauth
+
             <div id="selectedPuja" class="selected-puja">
                 <h3>Selected Puja: <span id="pujaName">Loading...</span></h3>
             </div>

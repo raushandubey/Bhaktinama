@@ -112,11 +112,21 @@ document.addEventListener('DOMContentLoaded', function() {
         const pandit = JSON.parse(localStorage.getItem('bhakti_pandit') || '{}');
         const puja = localStorage.getItem('bhakti_puja') || 'Not specified';
         const appointmentId = 'BN' + Math.floor(Math.random()*1000000);
+        
+        // Get user data from the page (if available)
+        const userMobile = document.querySelector('[data-user-mobile]')?.getAttribute('data-user-mobile') || 
+                          localStorage.getItem('bhakti_user_mobile') || 'Not available';
+        const userName = document.querySelector('[data-user-name]')?.getAttribute('data-user-name') || 
+                        localStorage.getItem('bhakti_user_name') || 'Not available';
+        
         appointmentDetails.innerHTML = `
             <h2>Appointment ID: ${appointmentId}</h2>
             <p><strong>Puja Type:</strong> ${puja}</p>
             <p><strong>Date:</strong> ${slot.date || '-'}</p>
             <p><strong>Time Slot:</strong> ${slot.slot || '-'}</p>
+            <h3>Customer Details</h3>
+            <p><strong>Name:</strong> ${userName}</p>
+            <p><strong>Mobile:</strong> ${userMobile}</p>
             <h3>Pandit Details</h3>
             <p><strong>Name:</strong> ${pandit.name || '-'}</p>
             <p><strong>Profile:</strong> ${pandit.profile || '-'}</p>
@@ -134,6 +144,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     date: slot.date,
                     slot: slot.slot,
                     puja: puja,
+                    userName: userName,
+                    userMobile: userMobile,
                     pandit,
                     status: 'Reserved'
                 });
@@ -157,6 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="booking-puja"><strong>Puja:</strong> ${b.puja || 'General Booking'}</div>
                     <div class="booking-date"><i class="fa fa-calendar"></i> ${b.date} &nbsp; <i class="fa fa-clock"></i> ${b.slot}</div>
                     <div class="booking-pandit"><i class="fa fa-user-tie"></i> ${b.pandit.name}</div>
+                    <div class="booking-mobile"><i class="fa fa-phone"></i> ${b.userMobile || 'Not available'}</div>
                     <div class="booking-status">${b.status}</div>
                     <button class="view-details-btn" data-idx="${idx}">View Details</button>
                 </div>
@@ -171,6 +184,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         <p><strong>Puja Type:</strong> ${b.puja || 'General Booking'}</p>
                         <p><strong>Date:</strong> ${b.date}</p>
                         <p><strong>Time Slot:</strong> ${b.slot}</p>
+                        <h4>Customer Details</h4>
+                        <p><strong>Name:</strong> ${b.userName || 'Not available'}</p>
+                        <p><strong>Mobile:</strong> ${b.userMobile || 'Not available'}</p>
                         <h4>Pandit Details</h4>
                         <p><strong>Name:</strong> ${b.pandit.name || '-'}</p>
                         <p><strong>Profile:</strong> ${b.pandit.profile || '-'}</p>
@@ -222,6 +238,15 @@ document.addEventListener('DOMContentLoaded', function() {
     animatedElements.forEach(el => {
         observer.observe(el);
     });
+
+    // Store user data when available
+    const userDataElement = document.querySelector('[data-user-mobile]');
+    if (userDataElement) {
+        const userName = userDataElement.getAttribute('data-user-name');
+        const userMobile = userDataElement.getAttribute('data-user-mobile');
+        localStorage.setItem('bhakti_user_name', userName);
+        localStorage.setItem('bhakti_user_mobile', userMobile);
+    }
 
     // Quick Book functionality for logged-in users
     const quickPujaButtons = document.querySelectorAll('.quick-puja-btn');
