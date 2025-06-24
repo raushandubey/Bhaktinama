@@ -12,7 +12,7 @@
 </head>
 <body> 
     <header class="navbar">
-        <div class="logo">
+        <div class="logo" onclick="window.location.href='/index'" style="cursor:pointer;">
             <!-- <img src="{{ asset('images/WhatsApp Image 2025-05-28 at 22.20.33_b3f6ad17.jpg') }}" alt="Logo"> -->
             <img src="{{ asset('images/bhaktinama_logo-removebg-preview.png') }}" alt="Bhaktinama Logo" height="40" style="vertical-align:middle;"> 
             <i class="fas fa-om" style="font-size: 24px; color: #d4af37; margin-right: 10px;"></i>
@@ -20,16 +20,37 @@
         </div>
         <nav>
             <a href="/index">Home</a>
-            <a href="/signup">Signup</a>
-            <a href="/login">Login</a>
-            <a href="/history">My Bookings</a>
+            @auth
+                <span class="welcome-text">Welcome, {{ Auth::user()->name }}!</span>
+                <a href="/history">My Bookings</a>
+                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                    @csrf
+                    <button type="submit" class="nav-btn">Logout</button>
+                </form>
+            @else
+                <a href="/signup">Signup</a>
+                <a href="/login">Login</a>
+            @endauth
         </nav>
     </header>
     <section class="hero">
         <div class="hero-content">
             <h1>Book Pandit Services Online</h1>
             <p>Choose your ritual, select a slot, and get the best Pandits at your doorstep. Fast, easy, and secure!</p>
-            <a href="/signup" class="cta-btn">Get Started <i class="fa fa-arrow-right"></i></a>
+            @auth
+                <div class="quick-book-section">
+                    <h3>Quick Book Your Puja</h3>
+                    <p>You're logged in! Select a puja to book immediately:</p>
+                    <div class="quick-puja-grid">
+                        <button class="quick-puja-btn" data-puja="Satyanarayan Puja">Satyanarayan Puja</button>
+                        <button class="quick-puja-btn" data-puja="Griha Pravesh Puja">Griha Pravesh</button>
+                        <button class="quick-puja-btn" data-puja="Vahana Puja">Vahana Puja</button>
+                        <button class="quick-puja-btn" data-puja="Lakshmi Ganesh Puja">Lakshmi Ganesh</button>
+                    </div>
+                </div>
+            @else
+                <a href="/signup" class="cta-btn">Get Started <i class="fa fa-arrow-right"></i></a>
+            @endauth
         </div>
     </section>
     <main>

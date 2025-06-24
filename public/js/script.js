@@ -12,36 +12,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (card) {
                     const pujaName = card.querySelector('h3').textContent;
                     localStorage.setItem('bhakti_puja', pujaName);
-                    window.location.href = button.href;
+                    // Redirect to schedule page for booking
+                    window.location.href = '/schedule';
                 }
             }
-        });
-    }
-
-    // Signup form validation and redirect
-    const signupForm = document.getElementById('signupForm');
-    if (signupForm) {
-        signupForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Basic validation (can be expanded)
-            const formData = new FormData(signupForm);
-            const user = {};
-            formData.forEach((v, k) => user[k] = v);
-            localStorage.setItem('bhakti_user', JSON.stringify(user));
-            window.location.href = '\schedule';
-        });
-    }
-
-    // Login form logic (dummy, for demo)
-    const loginForm = document.getElementById('loginForm');
-    if (loginForm) {
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const login = loginForm.login.value;
-            // For demo, just set logged in and redirect
-            localStorage.setItem('bhakti_loggedin', 'true');
-            localStorage.setItem('bhakti_login_name', login);
-            window.location.href = '\index';
         });
     }
 
@@ -65,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (available) {
                     div.addEventListener('click', () => {
                         localStorage.setItem('bhakti_slot', JSON.stringify({ date: datePicker.value, slot }));
-                        window.location.href = '\pandit';
+                        window.location.href = '/pandit';
                     });
                 }
                 timeSlotsDiv.appendChild(div);
@@ -125,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const selected = panditForm.pandit.value;
             localStorage.setItem('bhakti_pandit', JSON.stringify(pandits[selected]));
-            window.location.href = '\appointment';
+            window.location.href = '/appointment';
         });
     }
 
@@ -134,7 +108,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const payNowBtn = document.getElementById('payNowBtn');
     const paymentBox = document.getElementById('paymentBox');
     if (appointmentDetails) {
-        const user = JSON.parse(localStorage.getItem('bhakti_user') || '{}');
         const slot = JSON.parse(localStorage.getItem('bhakti_slot') || '{}');
         const pandit = JSON.parse(localStorage.getItem('bhakti_pandit') || '{}');
         const puja = localStorage.getItem('bhakti_puja') || 'Not specified';
@@ -144,11 +117,6 @@ document.addEventListener('DOMContentLoaded', function() {
             <p><strong>Puja Type:</strong> ${puja}</p>
             <p><strong>Date:</strong> ${slot.date || '-'}</p>
             <p><strong>Time Slot:</strong> ${slot.slot || '-'}</p>
-            <h3>Customer Details</h3>
-            <p><strong>Name:</strong> ${user.name || '-'}</p>
-            <p><strong>Email:</strong> ${user.email || '-'}</p>
-            <p><strong>Mobile:</strong> ${user.mobile || '-'}</p>
-            <p><strong>Address:</strong> ${user.address || '-'}</p>
             <h3>Pandit Details</h3>
             <p><strong>Name:</strong> ${pandit.name || '-'}</p>
             <p><strong>Profile:</strong> ${pandit.profile || '-'}</p>
@@ -161,13 +129,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 payNowBtn.style.display = 'none';
                 // Save booking to localStorage
                 const bookings = JSON.parse(localStorage.getItem('bhakti_bookings') || '[]');
-                const puja = localStorage.getItem('bhakti_puja') || 'Not specified';
                 bookings.push({
                     id: appointmentId,
                     date: slot.date,
                     slot: slot.slot,
                     puja: puja,
-                    user,
                     pandit,
                     status: 'Reserved'
                 });
@@ -205,11 +171,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         <p><strong>Puja Type:</strong> ${b.puja || 'General Booking'}</p>
                         <p><strong>Date:</strong> ${b.date}</p>
                         <p><strong>Time Slot:</strong> ${b.slot}</p>
-                        <h4>User Details</h4>
-                        <p><strong>Name:</strong> ${b.user.name || '-'}</p>
-                        <p><strong>Email:</strong> ${b.user.email || '-'}</p>
-                        <p><strong>Mobile:</strong> ${b.user.mobile || '-'}</p>
-                        <p><strong>Address:</strong> ${b.user.address || '-'}</p>
                         <h4>Pandit Details</h4>
                         <p><strong>Name:</strong> ${b.pandit.name || '-'}</p>
                         <p><strong>Profile:</strong> ${b.pandit.profile || '-'}</p>
@@ -260,6 +221,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     animatedElements.forEach(el => {
         observer.observe(el);
+    });
+
+    // Quick Book functionality for logged-in users
+    const quickPujaButtons = document.querySelectorAll('.quick-puja-btn');
+    quickPujaButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const pujaName = this.getAttribute('data-puja');
+            localStorage.setItem('bhakti_puja', pujaName);
+            window.location.href = '/schedule';
+        });
     });
 
 }); 

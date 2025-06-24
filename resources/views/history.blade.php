@@ -12,11 +12,23 @@
 <body>
     <header class="navbar">
         <div class="logo" onclick="window.location.href='/index'" style="cursor:pointer;">
+            <img src="{{ asset('images/bhaktinama_logo-removebg-preview.png') }}" alt="Bhaktinama Logo" height="40" style="vertical-align:middle;"> 
+            <i class="fas fa-om" style="font-size: 24px; color: #d4af37; margin-right: 10px;"></i>
             <span>Bhaktinama.com</span>
         </div>
         <nav>
             <a href="/index">Home</a>
-            <a href="/pandit">Book Pandit</a>
+            @auth
+                <span class="welcome-text">Welcome, {{ Auth::user()->name }}!</span>
+                <a href="/history">My Bookings</a>
+                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                    @csrf
+                    <button type="submit" class="nav-btn">Logout</button>
+                </form>
+            @else
+                <a href="/signup">Signup</a>
+                <a href="/login">Login</a>
+            @endauth
         </nav>
     </header>
     <main>
