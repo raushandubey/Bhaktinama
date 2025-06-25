@@ -16,30 +16,30 @@ class DatabaseSeeder extends Seeder
     {
         // Create a test user
         User::create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Ankit Razzput',
+            'email' => 'Razzup@example.com',
             'mobile' => '9876543210',
-            'dob' => '1990-01-01',
-            'address' => '123 Test Street, Test City',
+            'dob' => '2004-11-22',
+            'address' => 'dehri, bihar',
             'password' => Hash::make('password123'),
         ]);
 
         // Create additional test users
         User::create([
-            'name' => 'John Doe',
-            'email' => 'john@example.com',
+            'name' => 'Mangal Kumar',
+            'email' => 'mangal@example.com',
             'mobile' => '9876543211',
-            'dob' => '1985-05-15',
-            'address' => '456 Main Street, City Center',
+            'dob' => '2004-10-19',
+            'address' => 'sasaram, bihar',
             'password' => Hash::make('password123'),
         ]);
 
         User::create([
-            'name' => 'Jane Smith',
-            'email' => 'jane@example.com',
+            'name' => 'Raushan Dubey',
+            'email' => 'raushan@example.com',
             'mobile' => '9876543212',
-            'dob' => '1992-08-20',
-            'address' => '789 Oak Avenue, Suburb',
+            'dob' => '2005-01-09',
+            'address' => 'dehri, bihar',
             'password' => Hash::make('password123'),
         ]);
     }
