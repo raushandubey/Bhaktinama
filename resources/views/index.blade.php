@@ -77,7 +77,7 @@
             <div class="puja-grid">
             <div class="puja-card animate-on-scroll">
                     <img src="{{ asset('images/Puja.jpg') }}" alt="Only Puja">
-                    <h3>Only Puja1</h3>
+                    <h3>Only Puja</h3>
                     <p>For prosperity, happiness, and well-being of the family.</p>
                     <a href="/signup" class="cta-btn">Book Now</a>
                 </div>
