@@ -48,6 +48,11 @@ body {
     animation-name: fadeInUp;
 }
 .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     max-width: 600px;
     margin: 0 auto;
 }
@@ -110,7 +115,17 @@ body {
 }
 .feature-card i {
     color: #d4af37;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.2rem;
+    margin-top: 0.2rem;
+    font-size: 1.7rem;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), color 0.3s, box-shadow 0.3s;
+    display: inline-block;
+}
+.feature-card:hover i {
+    animation: tada 0.8s;
+    color: #bfa12e;
+    transform: scale(1.15);
+    box-shadow: 0 4px 16px rgba(212,175,55,0.12);
 }
 
 .puja-services {
@@ -217,6 +232,11 @@ footer {
     .section-title { font-size: 1.3rem; }
     .puja-card, .feature-card { padding: 1rem 0.5rem; }
     .puja-card img { height: 140px; object-fit: cover; }
+    .feature-card i {
+        font-size: 1.3rem;
+        margin-bottom: 0.1rem;
+        margin-top: 0.1rem;
+    }
 }
 @media (max-width: 500px) {
     .navbar { flex-direction: column; align-items: flex-start; }
@@ -300,10 +320,9 @@ button:hover {
     font-weight: bold;
 }
 .pandit-cards {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
     margin-top: 2rem;
 }
 .pandit-card {
@@ -318,6 +337,8 @@ button:hover {
     transition: transform 0.2s, box-shadow 0.2s;
     animation-name: fadeInUp;
     animation-delay: 0.15s;
+    display: flex;
+    flex-direction: column;
 }
 .pandit-card:hover {
     transform: translateY(-6px) scale(1.03);
@@ -369,6 +390,13 @@ button:hover {
     background: #d4af37;
     color: #fff;
 }
+.pandit-card .pandit-info {
+    flex-grow: 1;
+}
+.pandit-card .pandit-phone {
+    margin-top: auto;
+    padding-top: 1rem;
+}
 .modal {
     position: fixed;
     z-index: 1000;
@@ -401,14 +429,9 @@ button:hover {
     color: #bfa12e;
     cursor: pointer;
 }
-@media (max-width: 700px) {
+@media (max-width: 992px) {
     .pandit-cards {
-        flex-direction: column;
-        gap: 1rem;
-        align-items: center;
-    }
-    .pandit-card {
-        max-width: 95vw;
+        grid-template-columns: 1fr;
     }
 }
 .page-title {
@@ -428,136 +451,167 @@ button:hover {
     margin-left: auto;
     margin-right: auto;
 }
-.pandit-cards {
-    margin-top: 1.5rem;
-    gap: 2.5rem;
-}
-.pandit-card {
-    border: 1.5px solid #f3e7c9;
-    box-shadow: 0 4px 18px rgba(212,175,55,0.07);
-    padding-top: 2rem;
-}
-.pandit-card .pandit-name {
-    color: #bfa12e;
-    font-size: 1.15rem;
-}
-.pandit-card .pandit-profile {
-    font-style: italic;
-}
-.pandit-card .pandit-reviews {
-    font-weight: bold;
-}
-@media (max-width: 700px) {
-    .page-title { font-size: 1.3rem; }
-    .info-text { font-size: 1rem; }
-}
 .bookings-list {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 2rem;
-    justify-content: center;
     margin-top: 2rem;
 }
 .booking-card {
     background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
-    padding: 1.5rem 1.2rem;
-    min-width: 260px;
-    max-width: 320px;
-    flex: 1 1 260px;
-    margin-bottom: 1rem;
-    border-left: 5px solid #d4af37;
-    position: relative;
-    transition: box-shadow 0.2s;
-    animation-name: fadeInUp;
-    animation-delay: 0.15s;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 .booking-card:hover {
-    box-shadow: 0 8px 32px rgba(212,175,55,0.13);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
 }
-.booking-card .booking-id {
-    font-size: 1.1rem;
-    color: #bfa12e;
+.booking-header {
+    background: linear-gradient(135deg, #f8f2e3, #e9d8b3);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+}
+.booking-id {
+    font-size: 0.9rem;
     font-weight: bold;
-    margin-bottom: 0.5rem;
+    color: #6c584c;
 }
-.booking-card .booking-date {
-    color: #444;
-    font-size: 1rem;
-    margin-bottom: 0.2rem;
-}
-.booking-card .booking-pandit {
-    color: #333;
-    font-size: 1rem;
-    margin-bottom: 0.2rem;
-}
-.booking-card .booking-status {
-    font-size: 0.98rem;
-    color: #388e3c;
+.booking-status {
+    font-size: 0.8rem;
     font-weight: bold;
-    margin-top: 0.5rem;
-}
-
-.booking-card .booking-puja {
-    font-size: 1.1rem;
-    color: #333;
-    margin-bottom: 0.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #eee;
-}
-
-.booking-card .booking-mobile {
-    font-size: 1rem;
-    color: #666;
-    margin-bottom: 0.5rem;
-}
-
-.booking-card .booking-mobile i {
-    color: #d4af37;
-    margin-right: 0.3rem;
-}
-
-@media (max-width: 700px) {
-    .bookings-list {
-        flex-direction: column;
-        gap: 1rem;
-        align-items: center;
-        padding: 0;
-    }
-    .booking-card {
-        max-width: 95vw;
-    }
-}
-.view-details-btn {
-    margin-top: 1rem;
-    background: #fffbe6;
-    color: #bfa12e;
-    border: 1px solid #d4af37;
-    border-radius: 20px;
-    padding: 0.3rem 1.2rem;
-    font-size: 0.98rem;
-    cursor: pointer;
-    transition: background 0.2s;
-    display: inline-block;
-    animation-name: fadeIn;
-    animation-delay: 0.2s;
-}
-.view-details-btn:hover {
-    background: #d4af37;
+    padding: 0.3rem 0.6rem;
+    border-radius: 12px;
     color: #fff;
+    text-transform: uppercase;
 }
-#modalBookingDetails {
-    font-size: 1.05rem;
+.status-reserved { background-color: #fca11a; }
+.status-completed { background-color: #4caf50; }
+.status-canceled { background-color: #f44336; }
+.booking-body {
+    padding: 1.5rem;
+    line-height: 1.6;
+}
+.booking-puja, .booking-pandit, .booking-date {
+    margin: 0.5rem 0;
+    font-size: 1rem;
     color: #333;
 }
-#modalBookingDetails h3 {
-    color: #bfa12e;
-    margin-top: 0;
+.booking-body .fa { margin-right: 0.5rem; color: #d4af37; }
+.booking-footer {
+    padding: 1rem;
+    background: #f9f9f9;
+    text-align: right;
 }
-#modalBookingDetails p {
-    margin: 0.5rem 0;
+.booking-footer .cta-btn {
+    margin-left: 0.5rem;
 }
+.delete-btn {
+    background-color: #f44336;
+    color: white;
+    border-color: #f44336;
+}
+.delete-btn:hover {
+    background-color: #d32f2f;
+    border-color: #d32f2f;
+    color: white;
+}
+.feedback-display .fa-star.rated { color: #fdd835; }
+.feedback-display em { color: #555; font-style: italic; }
+.info-card {
+    background: #fff;
+    border: 1px dashed #ddd;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    grid-column: 1 / -1;
+}
+.alert {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 5px;
+    border: 1px solid transparent;
+}
+.alert-success { background-color: #d4edda; border-color: #c3e6cb; color: #155724; }
+.alert-error { background-color: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+}
+.modal-content {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    animation: modal-fade-in 0.3s ease;
+}
+@keyframes modal-fade-in {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.close-modal {
+    color: #aaa;
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close-modal:hover { color: #000; }
+.rating-stars {
+    text-align: center;
+    margin: 1.5rem 0;
+}
+.rating-stars .fa-star {
+    font-size: 2.5rem;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.rating-stars .fa-star:hover,
+.rating-stars .fa-star.rated { color: #fdd835; }
+.modal-content textarea {
+    width: 100%;
+    padding: 0.8rem;
+    min-height: 100px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+    margin-bottom: 1.5rem;
+}
+.welcome-text {
+    color: #fdeac8;
+    margin: 0 1rem;
+    font-weight: 500;
+}
+.nav-btn {
+    background: transparent;
+    border: 1px solid #d4af37;
+    color: #d4af37;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.nav-btn:hover { background: #d4af37; color: #2c1e12; }
 
 /* Animations */
 .form-card {
@@ -683,8 +737,14 @@ button:hover {
 } 
 
 @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(40px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translate3d(0, 40px, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
 }
 @keyframes fadeIn {
     from { opacity: 0; }
@@ -704,18 +764,17 @@ button:hover {
 }
 .animate-on-scroll {
     opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.7s cubic-bezier(.4,2,.6,1), transform 0.7s cubic-bezier(.4,2,.6,1);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 .animate-on-scroll.visible {
     opacity: 1;
-    transform: translateY(0);
-    animation: fadeInUp 0.7s cubic-bezier(.4,2,.6,1);
+    transform: none;
 }
-.animate-fade.visible { animation: fadeIn 0.8s; }
-.animate-scale.visible { animation: scaleIn 0.7s; }
-.animate-slide-left.visible { animation: slideInLeft 0.7s; }
-.animate-slide-right.visible { animation: slideInRight 0.7s; }
+.animate-fade-in { transform: translateY(20px); }
+.animate-slide-up { transform: translateY(50px); }
+.animate-zoom-in { transform: scale(0.95); }
+.animate-slide-left { transform: translateX(-50px); }
+.animate-slide-right { transform: translateX(50px); }
 
 .section-title.animate-on-scroll {
     animation-delay: 0.1s;
@@ -889,9 +948,9 @@ button:hover {
 
 .quick-puja-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
-    margin-top: 1rem;
+    margin: 1.2rem 0 0 0;
 }
 
 .quick-puja-btn {
@@ -917,9 +976,10 @@ button:hover {
     transform: translateY(-1px);
 }
 
-@media (max-width: 700px) {
+@media (max-width: 600px) {
     .quick-puja-grid {
         grid-template-columns: 1fr;
+        gap: 0.7rem;
     }
     
     .quick-book-section {
@@ -927,3 +987,311 @@ button:hover {
         margin-top: 1.5rem;
     }
 } 
+
+.countdown-timer {
+    background-color: #fffaf0;
+    border: 1px solid #fdeec9;
+    color: #a07d3b;
+    padding: 0.75rem;
+    margin: 1rem 0;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.countdown-timer strong {
+    color: #8c6d30;
+}
+
+.booking-footer {
+    padding: 1rem;
+    background: #f9f9f9;
+    text-align: right;
+}
+
+.booking-footer .cta-btn {
+    margin-left: 0.5rem;
+} 
+
+/* Card hover effects */
+.puja-card, .pandit-card, .booking-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.puja-card:hover, .pandit-card:hover, .booking-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+    border-color: #d4af37;
+}
+
+/* Button hover effects */
+.cta-btn, .nav-btn {
+    transition: all 0.3s ease;
+    will-change: transform; /* Performance hint */
+    background-size: 200% auto;
+}
+.cta-btn {
+    background-image: linear-gradient(to right, #d4af37, #eacda3, #d4af37);
+}
+.cta-btn:hover, .nav-btn:hover {
+    background-position: right center; /* change the direction of the change here */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Card image hover effect */
+.puja-card img, .pandit-card .pandit-img {
+    transition: transform 0.4s ease-in-out;
+}
+.puja-card:hover img, .pandit-card:hover .pandit-img {
+    transform: scale(1.05);
+}
+
+/* More Keyframe Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translate3d(0, -40px, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+/* Form Input Styling */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+textarea {
+    transition: all 0.3s ease-in-out;
+    border: 1px solid #ccc;
+    padding: 0.8rem;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="date"]:focus,
+textarea:focus {
+    border-color: #d4af37;
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
+    outline: none;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .navbar nav {
+        gap: 1rem;
+    }
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    .navbar .logo {
+        margin-bottom: 1rem;
+    }
+    .navbar nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .hero {
+        padding: 4rem 1rem;
+    }
+    .quick-puja-options, .puja-grid, .features-grid, .bookings-list, .pandit-cards {
+        grid-template-columns: 1fr;
+        padding: 0 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-content h1 {
+        font-size: 2rem;
+        line-height: 1.3;
+    }
+    .form-card, .modal-content {
+        padding: 1.5rem;
+    }
+    .navbar a, .navbar .nav-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
+} 
+
+/* Flexbox enhancements for alignment and spacing */
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.features-grid, .puja-grid, .pandit-cards {
+    display: grid; /* Using grid for card layouts */
+    justify-items: center;
+}
+
+/* New Animations */
+.hero-content .cta-btn {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
+    70% { transform: scale(1.05); box-shadow: 0 0 10px 20px rgba(212, 175, 55, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+}
+
+/* SVG icon hover animation */
+.puja-card .fa, .pandit-card .fa {
+    transition: transform 0.3s ease-in-out, color 0.3s ease;
+}
+.puja-card:hover .fa, .pandit-card:hover .fa {
+    transform: scale(1.2);
+    color: #bfa12e;
+}
+
+/* Keyframe Animations for Icons */
+@keyframes tada {
+    0% {transform: scale(1);}
+    10%, 20% {transform: scale(0.9) rotate(-3deg);}
+    30%, 50%, 70%, 90% {transform: scale(1.1) rotate(3deg);}
+    40%, 60%, 80% {transform: scale(1.1) rotate(-3deg);}
+    100% {transform: scale(1) rotate(0);}
+}
+
+@keyframes wobble {
+    0% { transform: translateX(0%); }
+    15% { transform: translateX(-25%) rotate(-5deg); }
+    30% { transform: translateX(20%) rotate(3deg); }
+    45% { transform: translateX(-15%) rotate(-3deg); }
+    60% { transform: translateX(10%) rotate(2deg); }
+    75% { transform: translateX(-5%) rotate(-1deg); }
+    100% { transform: translateX(0%); }
+}
+
+/* More granular responsive styles */
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1320px;
+    }
+    .hero-content h1 {
+        font-size: 3.5rem;
+    }
+} 
+
+@media (max-width: 600px) {
+    body {
+        font-size: 1rem;
+    }
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0.5rem 0.5rem;
+    }
+    .logo {
+        font-size: 1.1rem;
+    }
+    .navbar nav {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    .hero {
+        padding: 2rem 0.5rem 1rem 0.5rem;
+    }
+    .hero-content h1 {
+        font-size: 1.3rem;
+        line-height: 1.2;
+    }
+    .hero-content p {
+        font-size: 1rem;
+    }
+    .cta-btn, .nav-btn, .quick-puja-btn {
+        font-size: 1rem;
+        padding: 0.7rem 1.2rem;
+        border-radius: 24px;
+        min-width: 44px;
+        min-height: 44px;
+    }
+    .features {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+    .feature-card, .puja-card, .pandit-card {
+        padding: 1rem 0.5rem;
+        font-size: 0.98rem;
+        min-width: 0;
+        max-width: 100vw;
+    }
+    .feature-card i, .puja-card .fa, .pandit-card .fa {
+        font-size: 1.5rem;
+    }
+    .puja-grid, .pandit-cards {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 0 0.2rem;
+    }
+    .puja-card img, .pandit-card img {
+        height: 100px;
+        object-fit: cover;
+        width: 100%;
+        border-radius: 6px;
+    }
+    .section-title {
+        font-size: 1.1rem;
+    }
+    .form-card, .modal-content {
+        padding: 1rem;
+    }
+    .booking-card, .feature-card, .puja-card, .pandit-card {
+        margin-bottom: 1rem;
+    }
+    .booking-footer .cta-btn, .delete-btn {
+        min-width: 44px;
+        min-height: 44px;
+        font-size: 1rem;
+    }
+    .countdown-timer {
+        font-size: 0.95rem;
+        padding: 0.5rem;
+    }
+} 
+/* ... existing code ... */
+.hero {
+    background: linear-gradient(120deg, #d4af37 0%, #fffbe6 100%);
+    padding: 1.2rem 0.5rem 0.7rem 0.5rem;
+    text-align: center;
+    animation-name: fadeInUp;
+}
+.hero-content h1 {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+    color: #222;
+}
+.hero-content p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: #444;
+}
+@media (max-width: 600px) {
+    .hero {
+        padding: 0.7rem 0.2rem 0.4rem 0.2rem;
+    }
+    .hero-content h1 {
+        font-size: 1.1rem;
+        margin-bottom: 0.3rem;
+    }
+    .hero-content p {
+        font-size: 0.95rem;
+        margin-bottom: 0.7rem;
+    }
+}
+/* ... existing code ... */

@@ -20,7 +20,7 @@
             <a href="/index">Home</a>
             @auth
                 <span class="welcome-text">Welcome, {{ Auth::user()->name }}!</span>
-                <a href="/history">My Bookings</a>
+            <a href="/history">My Bookings</a>
                 <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                     @csrf
                     <button type="submit" class="nav-btn">Logout</button>

@@ -28,8 +28,8 @@
                     <button type="submit" class="nav-btn">Logout</button>
                 </form>
             @else
-                <a href="/signup">Signup</a>
-                <a href="/login">Login</a>
+            <a href="/signup">Signup</a>
+            <a href="/login">Login</a>
             @endauth
         </nav>
     </header>
@@ -49,7 +49,7 @@
                     </div>
                 </div>
             @else
-                <a href="/signup" class="cta-btn">Get Started <i class="fa fa-arrow-right"></i></a>
+            <a href="/signup" class="cta-btn">Get Started <i class="fa fa-arrow-right"></i></a>
             @endauth
         </div>
     </section>

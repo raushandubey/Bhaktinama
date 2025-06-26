@@ -49,14 +49,14 @@
             </div>
             
             <div class="schedule-form">
-                <label for="datePicker">Select Date:</label>
+        <label for="datePicker">Select Date:</label>
                 <input type="date" id="datePicker" required min="{{ date('Y-m-d') }}">
-                <div id="timeSlots" class="grid"></div>
+        <div id="timeSlots" class="grid"></div>
             </div>
         </div>
     </main>
     
-    <script src="{{ asset('js/script.js') }}"></script>
+<script src="{{ asset('js/script.js') }}"></script> 
     <script>
         // Display selected puja
         document.addEventListener('DOMContentLoaded', function() {

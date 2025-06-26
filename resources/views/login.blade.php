@@ -20,7 +20,7 @@
         </nav>
     </header>
     <main>
-        <div class="form-card animate-card">
+        <div class="form-card animate-on-scroll" data-animation="animate-fade-in">
             <h2 class="page-title"><i class="fa fa-sign-in-alt"></i> Login to Your Account</h2>
             <p class="info-text">Welcome back! Please login to access your bookings and manage your appointments.</p>
             
@@ -54,7 +54,7 @@
                     <input type="checkbox" name="remember" checked>
                     <span>Remember me (Stay logged in)</span>
                 </label>
-                <button type="submit" class="cta-btn">Login</button>
+                <button type="submit" class="cta-btn animate-on-scroll" data-animation="animate-zoom-in">Login</button>
             </form>
             
             <div class="auth-links">
@@ -62,7 +62,7 @@
             </div>
         </div>
     </main>
-   
-    <script src="{{ asset('js/script.js') }}"></script>
+  
+<script src="{{ asset('js/script.js') }}"></script>
 </body>
 </html> 

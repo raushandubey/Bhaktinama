@@ -1,49 +1,100 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Bookings – Bhaktinama.com</title>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-   
+@extends('layouts.app')
 
-</head>
-<body>
-    <header class="navbar">
-        <div class="logo" onclick="window.location.href='/index'" style="cursor:pointer;">
-            <img src="{{ asset('images/bhaktinama_logo-removebg-preview.png') }}" alt="Bhaktinama Logo" height="40" style="vertical-align:middle;"> 
-            <i class="fas fa-om" style="font-size: 24px; color: #d4af37; margin-right: 10px;"></i>
-            <span>Bhaktinama.com</span>
-        </div>
-        <nav>
-            <a href="/index">Home</a>
-            @auth
-                <span class="welcome-text">Welcome, {{ Auth::user()->name }}!</span>
-                <a href="/history">My Bookings</a>
-                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
-                    @csrf
-                    <button type="submit" class="nav-btn">Logout</button>
-                </form>
-            @else
-                <a href="/signup">Signup</a>
-                <a href="/login">Login</a>
-            @endauth
-        </nav>
-    </header>
-    <main>
-        <h2 class="page-title"><i class="fa fa-calendar-check"></i> My Bookings</h2>
-        <div id="bookingsList" class="bookings-list"></div>
-    </main>
-    <div id="bookingModal" class="modal" style="display:none;">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div id="modalBookingDetails"></div>
-        </div>
+@section('title', 'My Bookings – Bhaktinama.com')
+
+@section('content')
+<main>
+    <h2 class="page-title"><i class="fa fa-calendar-check"></i> My Bookings</h2>
+
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+    @if(session('error'))
+        <div class="alert alert-error">{{ session('error') }}</div>
+    @endif
+
+    <div class="bookings-list">
+        @forelse($bookings as $booking)
+            <div class="booking-card animate-on-scroll" data-animation="animate-slide-up">
+                <div class="booking-header">
+                    <span class="booking-id">ID: {{ $booking->id }}</span>
+                    <span class="booking-status status-{{ strtolower($booking->status) }}">{{ $booking->status }}</span>
+                </div>
+                <div class="booking-body">
+                    <p class="booking-puja"><strong>Puja:</strong> {{ $booking->puja_type }}</p>
+                    <p class="booking-pandit"><i class="fa fa-user-tie"></i> {{ $booking->pandit_name }}</p>
+                    <p class="booking-date"><i class="fa fa-calendar"></i> {{ \Carbon\Carbon::parse($booking->booking_date)->format('D, M j, Y') }} at <i class="fa fa-clock"></i> {{ $booking->booking_time }}</p>
+                    @if($booking->status == 'Reserved')
+                        <div class="countdown-timer" data-booking-datetime="{{ \Carbon\Carbon::parse($booking->booking_date . ' ' . $booking->booking_time)->toIso8601String() }}">
+                            <!-- Countdown will be rendered here by JavaScript -->
+                        </div>
+                    @endif
+                    <p class="booking-user"><strong>User:</strong> {{ $booking->user->name }} | <i class="fa fa-phone"></i> {{ $booking->user->mobile }} | <i class="fa fa-envelope"></i> {{ $booking->user->email }}</p>
+                    <p class="booking-pandit-details">
+                        <strong>Pandit Details:</strong><br>
+                        Name: {{ $booking->pandit_name }}<br>
+                        Quality: {{ $booking->pandit_quality ?? '-' }}<br>
+                        Rating: {{ $booking->pandit_rating ?? '-' }}<br>
+                        Phone: {{ $booking->pandit_phone ?? '-' }}
+                    </p>
+                </div>
+                <div class="booking-footer">
+                    @if($booking->feedback)
+                        <div class="feedback-display">
+                            <p><strong>Your Rating:</strong>
+                                @for($i = 1; $i <= 5; $i++)
+                                    <i class="fa fa-star {{ $i <= $booking->feedback->rating ? 'rated' : '' }}"></i>
+                                @endfor
+                            </p>
+                            @if($booking->feedback->comment)
+                                <p><em>"{{ $booking->feedback->comment }}"</em></p>
+                            @endif
+                        </div>
+                        <button class="cta-btn feedback-btn edit-feedback-btn"
+                            data-booking-id="{{ $booking->id }}"
+                            data-feedback-id="{{ $booking->feedback->id }}"
+                            data-rating="{{ $booking->feedback->rating }}"
+                            data-comment="{{ $booking->feedback->comment }}">
+                            Edit Feedback
+                        </button>
+                    @else
+                        <button class="cta-btn feedback-btn" data-booking-id="{{ $booking->id }}">Leave Feedback</button>
+                    @endif
+
+                    <form action="{{ route('bookings.destroy', $booking) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to cancel this booking?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="cta-btn delete-btn">Cancel Booking</button>
+                    </form>
+                </div>
+            </div>
+        @empty
+            <div class="info-card">
+                <p>You have no bookings yet. Book your first Puja today!</p>
+                <a href="{{ route('home') }}" class="cta-btn">Book a Puja</a>
+            </div>
+        @endforelse
     </div>
+</main>
 
-  <script src="{{ asset('js/script.js') }}"></script>
-
-   
-</body>
-</html> 
+<!-- Feedback Modal -->
+<div id="feedbackModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h3>Leave Feedback</h3>
+        <form id="feedbackForm" action="{{ route('feedback.store') }}" method="POST">
+            @csrf
+            <input type="hidden" name="booking_id" id="modal_booking_id">
+            <input type="hidden" id="modal_feedback_id" value="">
+            <div class="rating-stars">
+                @for($i = 1; $i <= 5; $i++)
+                    <i class="fa fa-star" data-rating="{{ $i }}"></i>
+                @endfor
+            </div>
+            <input type="hidden" name="rating" id="modal_rating" value="">
+            <textarea name="comment" id="modal_comment" placeholder="Share your experience... (optional)"></textarea>
+            <button type="submit" class="cta-btn" id="feedbackSubmitBtn">Submit Feedback</button>
+        </form>
+    </div>
+</div>
+@endsection 
