@@ -89,4 +89,56 @@ class AuthController extends Controller
         
         return redirect('/index')->with('success', 'You have been logged out successfully.');
     }
+
+    // --- Password Reset Methods ---
+
+    public function showForgotPasswordForm()
+    {
+        return view('auth.forgot-password');
+    }
+
+    public function verifyUserForPasswordReset(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'dob' => 'required|date',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if ($user && $user->dob == $request->dob) {
+            // The "token" here is just the user's email, not a real security token.
+            // This is just to satisfy the route parameter.
+            return redirect()->route('password.reset', ['token' => 'reset', 'email' => $user->email]);
+        }
+
+        return back()->with('error', 'The provided email and date of birth do not match our records.');
+    }
+
+    public function showResetPasswordForm(Request $request, $token)
+    {
+        return view('auth.reset-password', ['request' => $request]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if ($user) {
+            $user->password = Hash::make($request->password);
+            $user->save();
+
+            // Log the user in after password reset
+            Auth::login($user);
+
+            return redirect()->route('home')->with('success', 'Your password has been reset successfully!');
+        }
+
+        return back()->withErrors(['email' => 'An unexpected error occurred. Please try again.']);
+    }
 } 

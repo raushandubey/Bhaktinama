@@ -61,11 +61,13 @@
                         <button class="cta-btn feedback-btn" data-booking-id="{{ $booking->id }}">Leave Feedback</button>
                     @endif
 
+                    @if($booking->status == 'Reserved')
                     <form action="{{ route('bookings.destroy', $booking) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to cancel this booking?');">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="cta-btn delete-btn">Cancel Booking</button>
                     </form>
+                    @endif
                 </div>
             </div>
         @empty

@@ -20,6 +20,12 @@ Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup');
 Route::post('/signup', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// Password Reset Routes
+Route::get('forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
+Route::post('forgot-password', [AuthController::class, 'verifyUserForPasswordReset'])->name('password.email');
+Route::get('reset-password/{token}', [AuthController::class, 'showResetPasswordForm'])->name('password.reset'); // Token is not used but part of Laravel's convention
+Route::post('reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+
 // Protected Routes
 Route::middleware(['auth'])->group(function () {
     Route::get('/pandit', function () {

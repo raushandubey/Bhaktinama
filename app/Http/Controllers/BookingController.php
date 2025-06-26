@@ -60,7 +60,18 @@ class BookingController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        $booking->delete();
+        // Check if booking is already completed or canceled
+        if (in_array($booking->status, ['Completed', 'Canceled'])) {
+            return redirect()->route('history')->with('error', 'This booking cannot be canceled as it is already '.$booking->status.'.');
+        }
+
+        // Check if the booking is within 1 day
+        $bookingDateTime = Carbon::parse($booking->booking_date . ' ' . $booking->booking_time);
+        if ($bookingDateTime->isBefore(now()->addDay())) {
+            return redirect()->route('history')->with('error', 'Bookings cannot be canceled less than 24 hours in advance.');
+        }
+
+        $booking->update(['status' => 'Canceled']);
 
         return redirect()->route('history')->with('success', 'Booking canceled successfully!');
     }

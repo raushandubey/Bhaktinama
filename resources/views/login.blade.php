@@ -54,6 +54,11 @@
                     <input type="checkbox" name="remember" checked>
                     <span>Remember me (Stay logged in)</span>
                 </label>
+
+                <div class="auth-links" style="text-align: right; margin-bottom: 15px;">
+                    <a href="{{ route('password.request') }}">Forgot Password?</a>
+                </div>
+
                 <button type="submit" class="cta-btn animate-on-scroll" data-animation="animate-zoom-in">Login</button>
             </form>
             
