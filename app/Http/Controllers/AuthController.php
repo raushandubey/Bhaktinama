@@ -141,4 +141,68 @@ class AuthController extends Controller
 
         return back()->withErrors(['email' => 'An unexpected error occurred. Please try again.']);
     }
+
+    public function showPanditSignup()
+    {
+        return view('panditsignup');
+    }
+
+    public function showPanditLogin()
+    {
+        return view('panditlogin');
+    }
+
+    public function registerPandit(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'mobile' => 'required|string|max:15',
+            'dob' => 'required|date',
+            'address' => 'required|string|max:500',
+            'password' => 'required|string|min:6',
+            'password_confirmation' => 'required|same:password',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'mobile' => $request->mobile,
+            'dob' => $request->dob,
+            'address' => $request->address,
+            'password' => Hash::make($request->password),
+            'role' => 'pandit',
+        ]);
+
+        Auth::login($user);
+
+        return redirect('/pandit/dashboard')->with('success', 'Pandit account created successfully!');
+    }
+
+    public function loginPandit(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $user = User::where('email', $request->email)->where('role', 'pandit')->first();
+        if ($user && Hash::check($request->password, $user->password)) {
+            Auth::login($user, $request->has('remember'));
+            $request->session()->regenerate();
+            return redirect('/pandit/dashboard')->with('success', 'Welcome Pandit!');
+        }
+
+        return back()->withErrors([
+            'email' => 'Pandit email or password is incorrect, or you are not registered as a Pandit.'
+        ])->withInput($request->only('email'));
+    }
 } 

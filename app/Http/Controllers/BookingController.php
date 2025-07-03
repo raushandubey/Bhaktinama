@@ -19,13 +19,23 @@ class BookingController extends Controller
         
         // Auto-update status for past bookings
         foreach ($user->bookings()->where('status', 'Reserved')->get() as $booking) {
-            $bookingDateTime = Carbon::parse($booking->booking_date . ' ' . $booking->booking_time);
+            $bookingTimeParts = explode(' - ', $booking->booking_time);
+            $startTime = trim($bookingTimeParts[0]);
+            $bookingDateTime = Carbon::parse($booking->booking_date . ' ' . $startTime);
             if ($bookingDateTime->isPast()) {
                 $booking->update(['status' => 'Completed']);
             }
         }
 
         $bookings = $user->bookings()->with('feedback')->latest()->get();
+        
+        // Format booking times for display
+        foreach ($bookings as $booking) {
+            $bookingTimeParts = explode(' - ', $booking->booking_time);
+            $booking->start_time = trim($bookingTimeParts[0]);
+            $booking->end_time = isset($bookingTimeParts[1]) ? trim($bookingTimeParts[1]) : null;
+        }
+
         return view('history', compact('bookings'));
     }
 
@@ -66,7 +76,10 @@ class BookingController extends Controller
         }
 
         // Check if the booking is within 1 day
-        $bookingDateTime = Carbon::parse($booking->booking_date . ' ' . $booking->booking_time);
+        $bookingTimeParts = explode(' - ', $booking->booking_time);
+        $startTime = trim($bookingTimeParts[0]);
+        $bookingDateTime = Carbon::parse($booking->booking_date . ' ' . $startTime);
+        
         if ($bookingDateTime->isBefore(now()->addDay())) {
             return redirect()->route('history')->with('error', 'Bookings cannot be canceled less than 24 hours in advance.');
         }

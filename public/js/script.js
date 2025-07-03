@@ -47,8 +47,18 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     document.querySelectorAll('.quick-puja-btn').forEach(b => b.addEventListener('click', () => handlePujaSelection(b.dataset.puja)));
     document.querySelectorAll('.puja-card a.cta-btn').forEach(a => a.addEventListener('click', (e) => {
-            e.preventDefault();
-        handlePujaSelection(a.closest('.puja-card').querySelector('h3').textContent);
+        e.preventDefault();
+        const pujaCard = a.closest('.puja-card');
+        if (pujaCard) {
+            const h3 = pujaCard.querySelector('h3');
+            if (h3) {
+                handlePujaSelection(h3.textContent);
+            } else {
+                console.error('No <h3> found in .puja-card');
+            }
+        } else {
+            console.error('No .puja-card ancestor found for CTA button');
+        }
     }));
 
     // Schedule page
@@ -56,17 +66,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const slotsDiv = document.getElementById('timeSlots');
     if (datePicker && slotsDiv) {
         slotsDiv.innerHTML = '<div style="color:#888;text-align:center;">Please select a date to see available time slots.</div>';
-        const slots = ['5:00 AM', '6:00 AM', '7:00 AM', '8:00 AM', '9:00 AM', '5:00 PM', '6:00 PM', '7:00 PM'];
+        // Use slot ranges like "5AM - 7AM"
+        const slots = [
+            '5AM - 7AM',
+            '7AM - 9AM',
+            '9AM - 11AM',
+            '5PM - 7PM',
+            '7PM - 9PM'
+        ];
         datePicker.addEventListener('change', function() {
             slotsDiv.innerHTML = '';
             slots.forEach(slot => {
                 const div = document.createElement('div');
                 div.className = 'time-slot available';
                 div.textContent = slot;
-                    div.addEventListener('click', () => {
-                        localStorage.setItem('bhakti_slot', JSON.stringify({ date: datePicker.value, slot }));
+                div.addEventListener('click', () => {
+                    localStorage.setItem('bhakti_slot', JSON.stringify({ date: datePicker.value, slot }));
                     window.location.href = '/pandit';
-                    });
+                });
                 slotsDiv.appendChild(div);
             });
         });

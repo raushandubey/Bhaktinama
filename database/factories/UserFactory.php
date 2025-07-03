@@ -27,6 +27,10 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
+            'mobile' => fake()->phoneNumber(),
+            'dob' => fake()->date(),
+            'address' => fake()->address(),
+            'role' => 'user',
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];
@@ -39,6 +43,16 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+    
+    /**
+     * Configure the model as a pandit.
+     */
+    public function pandit(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'pandit',
         ]);
     }
 }

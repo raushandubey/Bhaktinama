@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\FeedbackController;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('index');
@@ -19,6 +20,10 @@ Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,
 Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup');
 Route::post('/signup', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/pdlogin', [AuthController::class, 'showPanditLogin'])->name('panditlogin');
+Route::post('/pdlogin', [AuthController::class, 'loginPandit'])->name('panditlogin.post');
+Route::get('/pdsignup', [AuthController::class, 'showPanditSignup'])->name('panditsignup');
+Route::post('/pdsignup', [AuthController::class, 'registerPandit'])->name('panditsignup.post');
 
 // Password Reset Routes
 Route::get('forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
@@ -46,6 +51,15 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/bookings/{booking}', [BookingController::class, 'destroy'])->name('bookings.destroy');
     Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
     Route::patch('/feedback/{feedback}', [FeedbackController::class, 'update'])->name('feedback.update');
+
+    // Pandit Dashboard Route
+    Route::get('/pandit/dashboard', function () {
+        // Check if user is authenticated and is a pandit
+        if (!Auth::check() || Auth::user()->role !== 'pandit') {
+            return redirect('/pdlogin')->with('error', 'You must be logged in as a pandit to access this page.');
+        }
+        return view('pandit.dashboard');
+    })->name('pandit.dashboard');
 });
 
 // Fallback for unauthenticated users

@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             'dob' => '2004-11-22',
             'address' => 'dehri, bihar',
             'password' => Hash::make('password123'),
+            'role' => 'user',
         ]);
 
         // Create additional test users
@@ -32,6 +33,7 @@ class DatabaseSeeder extends Seeder
             'dob' => '2004-10-19',
             'address' => 'sasaram, bihar',
             'password' => Hash::make('password123'),
+            'role' => 'user',
         ]);
 
         User::create([
@@ -41,6 +43,18 @@ class DatabaseSeeder extends Seeder
             'dob' => '2005-01-09',
             'address' => 'dehri, bihar',
             'password' => Hash::make('password123'),
+            'role' => 'user',
+        ]);
+        
+        // Create a test pandit
+        User::create([
+            'name' => 'Pandit Sharma',
+            'email' => 'pandit@example.com',
+            'mobile' => '9876543213',
+            'dob' => '1980-05-15',
+            'address' => 'Varanasi, UP',
+            'password' => Hash::make('password123'),
+            'role' => 'pandit',
         ]);
     }
 }

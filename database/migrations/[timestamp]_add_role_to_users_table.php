@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('mobile')->nullable()->after('email');
-            $table->date('dob')->nullable()->after('mobile');
-            $table->text('address')->nullable()->after('dob');
-            $table->string('role')->default('user')->after('address');
-        });
+        // Check if the column already exists before adding it
+        if (!Schema::hasColumn('users', 'role')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->string('role')->default('user')->after('address');
+            });
+        }
     }
 
     /**
@@ -25,7 +25,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['mobile', 'dob', 'address', 'role']);
+            $table->dropColumn('role');
         });
     }
-}; 
+};

@@ -40,7 +40,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('signup') }}" id="signupForm">
+            <form method="POST" action="{{ route('panditsignup.post') }}" id="signupForm">
                 @csrf
                 <label>
                     Name:
@@ -77,7 +77,7 @@
                 <p>Already have an account? <a href="{{ route('login') }}">Login here</a></p>
             </div>
             <div class="auth-links">
-                <p>For New Pandit Registration <a href="/pdsignup">click here</a></p>
+                <p>For New User Registration <a href="{{ route('signup') }}">click here</a></p>
             </div>
         </div>
     </main>

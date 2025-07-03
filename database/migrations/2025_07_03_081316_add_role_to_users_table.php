@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('bookings', function (Blueprint $table) {
-            $table->string('mobile')->nullable()->after('email');
-            $table->date('dob')->nullable()->after('mobile');
-            $table->text('address')->nullable()->after('dob');
+        Schema::table('users', function (Blueprint $table) {
+            //
         });
     }
 
@@ -23,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('bookings', function (Blueprint $table) {
-            $table->dropColumn([  ]);
+        Schema::table('users', function (Blueprint $table) {
+            //
         });
     }
 };

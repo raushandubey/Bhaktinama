@@ -16,16 +16,22 @@
     <div class="bookings-list">
         @forelse($bookings as $booking)
             <div class="booking-card animate-on-scroll" data-animation="animate-slide-up">
-                <div class="booking-header">
+                <!-- <div class="booking-header">
                     <span class="booking-id">ID: {{ $booking->id }}</span>
                     <span class="booking-status status-{{ strtolower($booking->status) }}">{{ $booking->status }}</span>
-                </div>
+                </div> -->
                 <div class="booking-body">
                     <p class="booking-puja"><strong>Puja:</strong> {{ $booking->puja_type }}</p>
                     <p class="booking-pandit"><i class="fa fa-user-tie"></i> {{ $booking->pandit_name }}</p>
-                    <p class="booking-date"><i class="fa fa-calendar"></i> {{ \Carbon\Carbon::parse($booking->booking_date)->format('D, M j, Y') }} at <i class="fa fa-clock"></i> {{ $booking->booking_time }}</p>
+                    <p class="booking-date">
+                        <i class="fa fa-calendar"></i> {{ \Carbon\Carbon::parse($booking->booking_date)->format('D, M j, Y') }} 
+                        <i class="fa fa-clock"></i> {{ $booking->start_time }}
+                        @if($booking->end_time)
+                            - {{ $booking->end_time }}
+                        @endif
+                    </p>
                     @if($booking->status == 'Reserved')
-                        <div class="countdown-timer" data-booking-datetime="{{ \Carbon\Carbon::parse($booking->booking_date . ' ' . $booking->booking_time)->toIso8601String() }}">
+                        <div class="countdown-timer" data-booking-datetime="{{ \Carbon\Carbon::parse($booking->booking_date . ' ' . $booking->start_time)->toIso8601String() }}">
                             <!-- Countdown will be rendered here by JavaScript -->
                         </div>
                     @endif

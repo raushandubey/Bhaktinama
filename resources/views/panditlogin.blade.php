@@ -22,7 +22,7 @@
     <main>
         <div class="form-card animate-on-scroll" data-animation="animate-fade-in">
             <h2 class="page-title"><i class="fa fa-sign-in-alt"></i> Login to Your Account</h2>
-            <p class="info-text">Welcome back! Please login to access your bookings and manage your appointments.</p>
+            <p class="info-text">Welcome back Pandit jee ! Please login to access your bookings and manage your appointments.</p>
             
             @if(session('success'))
                 <div class="alert alert-success">
@@ -40,7 +40,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('login') }}" class="auth-form">
+            <form method="POST" action="{{ route('panditlogin.post') }}" class="auth-form">
                 @csrf
                 <label>
                     Email:
@@ -66,7 +66,7 @@
                 <p>Don't have an account? <a href="{{ route('signup') }}">Sign up here</a></p>
             </div>
              <div class="auth-links">
-                <p>For Pandit Login <a href="/pdlogin">click here</a></p>
+                <p>For User Login <a href="{{route('login')}}">click here</a></p>
             </div>
         </div>
     </main>
