@@ -1,5 +1,14 @@
+  
+            <!-- <img src="{{ asset('images/WhatsApp Image 2025-05-28 at 22.20.33_b3f6ad17.jpg') }}" alt="Logo"> -->
+            <div class="bhaktinama-header">
+                <img src="{{ asset('images/bhaktinama_logo-removebg-preview.png') }}" alt="Bhaktinama Logo" height="40" style="vertical-align:middle;">
+                <i class="fas fa-om bhaktinama-om-icon"></i>
+                <span class="bhaktinama-title">Bhaktinama.com</span>
+            </div>
+            <
 
 <!-- Add required CSS -->
+ <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">

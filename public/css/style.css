@@ -1,3 +1,26 @@
+    .bhaktinama-header {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 2rem;
+                font-family: 'Poppins', sans-serif;
+            }
+            .bhaktinama-header img {
+                height: 40px;
+                vertical-align: middle;
+            }
+            .bhaktinama-om-icon {
+                font-size: 2.2rem;
+                color: #d4af37;
+                margin-right: 8px;
+                font-weight: bold;
+            }
+            .bhaktinama-title {
+                font-size: 2.2rem;
+                font-weight: 700;
+                color: #d4af37;
+                letter-spacing: 1px;
+            }
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
     margin: 0;

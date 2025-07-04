@@ -1,3 +1,12 @@
+<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+  
+            <!-- <img src="{{ asset('images/WhatsApp Image 2025-05-28 at 22.20.33_b3f6ad17.jpg') }}" alt="Logo"> -->
+            <div class="bhaktinama-header">
+                <img src="{{ asset('images/bhaktinama_logo-removebg-preview.png') }}" alt="Bhaktinama Logo" height="40" style="vertical-align:middle;">
+                <i class="fas fa-om bhaktinama-om-icon"></i>
+                <span class="bhaktinama-title">Bhaktinama.com</span>
+            </div>
+            
 
 <div class="profile-container">
     <div class="container py-5">
