@@ -19,7 +19,13 @@ class PanditDetail extends Model
         'is_verified',
         'is_available',
         'completed_pujas',
-        'total_reviews'
+        'total_reviews',
+        'city',
+        'state',
+        'address',
+        'travel_distance',
+        'id_proof',
+        'certificates'
     ];
 
     protected $casts = [
@@ -27,7 +33,8 @@ class PanditDetail extends Model
         'languages_known' => 'array',
         'is_verified' => 'boolean',
         'is_available' => 'boolean',
-        'rating' => 'float'
+        'rating' => 'float',
+        'certificates' => 'array'
     ];
 
     public function user()

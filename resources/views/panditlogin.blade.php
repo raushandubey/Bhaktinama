@@ -63,7 +63,7 @@
             </form>
             
             <div class="auth-links">
-                <p>Don't have an account? <a href="{{ route('signup') }}">Sign up here</a></p>
+                <p>Don't have an account? <a href="{{ route('pandit.signup') }}">Sign up here</a></p>
             </div>
              <div class="auth-links">
                 <p>For User Login <a href="{{route('login')}}">click here</a></p>

@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\FeedbackController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\PanditController;
 
 Route::get('/', function () {
     return view('index');
@@ -64,9 +65,22 @@ Route::middleware(['auth'])->group(function () {
     })->name('pandit.dashboard');
 
     // Pandit Profile Routes
-    Route::get('/pandit/profile/edit', [AuthController::class, 'showUpdateProfile'])->name('pandit.profile.edit');
-    Route::post('/pandit/profile/update', [AuthController::class, 'updateProfile'])->name('pandit.profile.update');
+    Route::get('/pandit/profile/edit', [PanditController::class, 'showUpdateProfile'])->name('pandit.profile.edit');
+    Route::put('/pandit/profile/update', [PanditController::class, 'updateProfile'])->name('pandit.profile.update');
+    Route::get('/pandit/profile/updated', function () {
+        return view('pandit.profile-updated');
+    })->name('pandit.profile.updated');
 });
+
+// Pandit Routes
+Route::get('/panditsignup', function () {
+    return view('panditsignup');
+})->name('pandit.signup');
+
+Route::post('/pandit/register', [PanditController::class, 'register'])->name('pandit.register');
+Route::get('/panditlogin', function () {
+    return view('panditlogin');
+})->name('pandit.login');
 
 // Fallback for unauthenticated users
 Route::fallback(function () {

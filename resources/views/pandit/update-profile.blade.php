@@ -71,30 +71,90 @@
                         <div class="form-section">
                             <h3 class="section-title">Professional Information</h3>
                             
-                            <div class="mb-3">
-                                <label for="specializations">Specializations</label>
-                                <select class="form-control select2" id="specializations" name="specializations[]" multiple required>
-                                    <option value="satyanarayan">Satyanarayan Puja</option>
-                                    <option value="griha_pravesh">Griha Pravesh</option>
-                                    <option value="marriage">Marriage Ceremony</option>
-                                    <option value="rudrabhishek">Rudrabhishek</option>
-                                    <option value="lakshmi_puja">Lakshmi Puja</option>
-                                    <option value="ganesh_puja">Ganesh Puja</option>
-                                    <option value="navagraha">Navagraha Puja</option>
-                                    <option value="kaal_sarp">Kaal Sarp Dosh Nivaran</option>
-                                </select>
+                            <div class="mb-4">
+                                <label class="d-block mb-3">Specializations</label>
+                                <div class="specialization-options">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input type="checkbox" class="form-check-input" id="specialization_satyanarayan" name="specialization[]" value="satyanarayan" {{ in_array('satyanarayan', old('specialization', [])) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="specialization_satyanarayan">Satyanarayan Puja</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input type="checkbox" class="form-check-input" id="specialization_griha_pravesh" name="specialization[]" value="griha_pravesh" {{ in_array('griha_pravesh', old('specialization', [])) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="specialization_griha_pravesh">Griha Pravesh</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input type="checkbox" class="form-check-input" id="specialization_marriage" name="specialization[]" value="marriage" {{ in_array('marriage', old('specialization', [])) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="specialization_marriage">Marriage Ceremony</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input type="checkbox" class="form-check-input" id="specialization_rudrabhishek" name="specialization[]" value="rudrabhishek" {{ in_array('rudrabhishek', old('specialization', [])) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="specialization_rudrabhishek">Rudrabhishek</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input type="checkbox" class="form-check-input" id="specialization_lakshmi_puja" name="specialization[]" value="lakshmi_puja" {{ in_array('lakshmi_puja', old('specialization', [])) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="specialization_lakshmi_puja">Lakshmi Puja</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input type="checkbox" class="form-check-input" id="specialization_ganesh_puja" name="specialization[]" value="ganesh_puja" {{ in_array('ganesh_puja', old('specialization', [])) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="specialization_ganesh_puja">Ganesh Puja</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input type="checkbox" class="form-check-input" id="specialization_navagraha" name="specialization[]" value="navagraha" {{ in_array('navagraha', old('specialization', [])) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="specialization_navagraha">Navagraha Puja</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input type="checkbox" class="form-check-input" id="specialization_kaal_sarp" name="specialization[]" value="kaal_sarp" {{ in_array('kaal_sarp', old('specialization', [])) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="specialization_kaal_sarp">Kaal Sarp Dosh Nivaran</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @error('specialization')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
 
-                            <div class="mb-3">
-                                <label for="languages">Languages Spoken</label>
-                                <select class="form-control select2" id="languages" name="languages[]" multiple required>
-                                    <option value="hindi">Hindi</option>
-                                    <option value="sanskrit">Sanskrit</option>
-                                    <option value="english">English</option>
-                                    <option value="marathi">Marathi</option>
-                                    <option value="gujarati">Gujarati</option>
-                                    <option value="bengali">Bengali</option>
-                                </select>
+                            <div class="mb-4">
+                                <label class="d-block mb-3">Languages Spoken</label>
+                                <div class="language-options">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input type="checkbox" class="form-check-input" id="language_hindi" name="languages[]" value="hindi" {{ in_array('hindi', old('languages', [])) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="language_hindi">Hindi</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input type="checkbox" class="form-check-input" id="language_sanskrit" name="languages[]" value="sanskrit" {{ in_array('sanskrit', old('languages', [])) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="language_sanskrit">Sanskrit</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input type="checkbox" class="form-check-input" id="language_english" name="languages[]" value="english" {{ in_array('english', old('languages', [])) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="language_english">English</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2">
+                                                <input type="checkbox" class="form-check-input" id="language_marathi" name="languages[]" value="marathi" {{ in_array('marathi', old('languages', [])) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="language_marathi">Marathi</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input type="checkbox" class="form-check-input" id="language_gujarati" name="languages[]" value="gujarati" {{ in_array('gujarati', old('languages', [])) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="language_gujarati">Gujarati</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input type="checkbox" class="form-check-input" id="language_bengali" name="languages[]" value="bengali" {{ in_array('bengali', old('languages', [])) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="language_bengali">Bengali</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @error('languages')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="mb-3">
@@ -285,6 +345,56 @@
     .form-section {
         padding: 1rem;
     }
+}
+
+/* Checkbox styles */
+.specialization-options,
+.language-options {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid #e0e0e0;
+}
+
+.form-check {
+    padding-left: 2rem;
+}
+
+.form-check-input {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-top: 0.2rem;
+    margin-left: -2rem;
+    border: 2px solid #FF8C42;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.form-check-input:checked {
+    background-color: #FF8C42;
+    border-color: #FF8C42;
+}
+
+.form-check-label {
+    cursor: pointer;
+    font-size: 0.95rem;
+    padding-top: 0.1rem;
+}
+
+.form-check:hover .form-check-input:not(:checked) {
+    border-color: #FF8C42;
+    background-color: rgba(255, 140, 66, 0.1);
+}
+
+/* Error message styles */
+.text-danger {
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+/* Section spacing */
+.mb-4 {
+    margin-bottom: 2rem !important;
 }
 </style>
 
