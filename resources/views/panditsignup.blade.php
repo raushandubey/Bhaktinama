@@ -22,7 +22,7 @@
     <main>
         <div class="form-card animate-card">
             <h2 class="page-title"><i class="fa fa-user-plus"></i> Create Your Account</h2>
-            <p class="info-text">Sign up to book Pandit services, manage your appointments, and enjoy a seamless spiritual experience.</p>
+            <p class="info-text">Sign up to book Pandit Ji services, manage your appointments, and enjoy a seamless spiritual experience.</p>
             
             @if(session('success'))
                 <div class="alert alert-success">

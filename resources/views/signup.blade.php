@@ -64,7 +64,7 @@
                 </label>
                 <label>
                     Password:
-                    <input type="password" name="password" required placeholder="Minimum 6 characters">
+                    <input type="password" name="password" required placeholder="Minimum 8 characters with letters and numbers">
                 </label>
                 <label>
                     Confirm Password:

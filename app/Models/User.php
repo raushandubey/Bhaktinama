@@ -25,6 +25,7 @@ class User extends Authenticatable
         'address',
         'password',
         'role',
+        'profile_picture'
     ];
 
     /**
@@ -58,5 +59,15 @@ class User extends Authenticatable
     public function feedback()
     {
         return $this->hasMany(Feedback::class);
+    }
+
+    public function panditDetail()
+    {
+        return $this->hasOne(PanditDetail::class);
+    }
+
+    public function isPandit()
+    {
+        return $this->role === 'pandit';
     }
 }

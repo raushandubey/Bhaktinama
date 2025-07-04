@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
+use App\Models\PanditDetail;
 
 class AuthController extends Controller
 {
@@ -22,63 +24,70 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $credentials = $request->validate([
             'email' => 'required|email',
-            'password' => 'required|min:6',
+            'password' => 'required'
         ]);
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
+        // Check if the user exists and has the correct role
+        $user = User::where('email', $credentials['email'])->first();
+        if (!$user || $user->role !== 'user') {
+            return back()->withErrors([
+                'email' => 'This email is not registered as a user. If you are a pandit, please use the pandit login.',
+            ])->onlyInput('email');
         }
 
-        $credentials = $request->only('email', 'password');
-        $remember = $request->has('remember');
-
-        if (Auth::attempt($credentials, $remember)) {
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            
-            // Check if user was trying to book a puja
-            $intendedUrl = session('url.intended', '/index');
-            if (str_contains($intendedUrl, '/schedule') || str_contains($intendedUrl, '/pandit')) {
-                return redirect()->intended('/schedule')->with('success', 'Welcome back! You can now proceed with your booking.');
-            }
-            
-            return redirect()->intended('/index')->with('success', 'Welcome back!');
+            return redirect()->intended('/');
         }
 
         return back()->withErrors([
-            'email' => 'Username or password was wrong.',
-        ])->withInput($request->only('email'));
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
     }
 
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
             'email' => 'required|string|email|max:255|unique:users',
-            'mobile' => 'required|string|max:15',
-            'dob' => 'required|date',
-            'address' => 'required|string|max:500',
-            'password' => 'required|string|min:6',
-            'password_confirmation' => 'required|same:password',
+            'mobile' => ['required', 'string', 'regex:/^[0-9]{10}$/'],
+            'dob' => ['required', 'date', 'before:today'],
+            'address' => ['required', 'string', 'max:500'],
+            'password' => ['required', 'string', 'min:8', 'confirmed', 'regex:/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/'],
+        ], [
+            'name.regex' => 'The name field should only contain letters and spaces.',
+            'mobile.regex' => 'Please enter a valid 10-digit mobile number.',
+            'dob.before' => 'Date of birth must be a date before today.',
+            'address.max' => 'The address should not exceed 500 characters.',
+            'password.min' => 'The password must be at least 8 characters.',
+            'password.regex' => 'Password must contain at least one letter and one number.',
         ]);
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
+        // Check if email is already registered as a pandit
+        $existingPandit = User::where('email', $validated['email'])
+            ->where('role', 'pandit')
+            ->exists();
+
+        if ($existingPandit) {
+            return back()->withErrors([
+                'email' => 'This email is already registered as a pandit. Please use a different email.',
+            ])->onlyInput('email');
         }
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'mobile' => $request->mobile,
-            'dob' => $request->dob,
-            'address' => $request->address,
-            'password' => Hash::make($request->password),
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'mobile' => $validated['mobile'],
+            'dob' => $validated['dob'],
+            'address' => $validated['address'],
+            'password' => Hash::make($validated['password']),
+            'role' => 'user'
         ]);
 
         Auth::login($user);
-
-        return redirect('/index')->with('success', 'Account created successfully!');
+        return redirect('/')->with('success', 'Account created successfully!');
     }
 
     public function logout(Request $request)
@@ -86,8 +95,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        
-        return redirect('/index')->with('success', 'You have been logged out successfully.');
+        return redirect('/');
     }
 
     // --- Password Reset Methods ---
@@ -154,55 +162,110 @@ class AuthController extends Controller
 
     public function registerPandit(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'mobile' => 'required|string|max:15',
-            'dob' => 'required|date',
-            'address' => 'required|string|max:500',
-            'password' => 'required|string|min:6',
-            'password_confirmation' => 'required|same:password',
+            'phone' => 'required|string|max:20',
+            'password' => ['required', 'confirmed', Password::defaults()],
+            'experience' => 'required|integer|min:0',
+            'specialization' => 'required|string|max:255',
+            'about' => 'nullable|string|max:1000',
         ]);
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
+        // Check if email is already registered as a user
+        $existingUser = User::where('email', $validated['email'])
+            ->where('role', 'user')
+            ->exists();
+
+        if ($existingUser) {
+            return back()->withErrors([
+                'email' => 'This email is already registered as a user. Please use a different email.',
+            ])->onlyInput('email');
         }
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'mobile' => $request->mobile,
-            'dob' => $request->dob,
-            'address' => $request->address,
-            'password' => Hash::make($request->password),
-            'role' => 'pandit',
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'password' => Hash::make($validated['password']),
+            'role' => 'pandit'
+        ]);
+
+        // Create pandit details
+        PanditDetail::create([
+            'user_id' => $user->id,
+            'experience' => $validated['experience'],
+            'specialization' => $validated['specialization'],
+            'about' => $validated['about'],
+            'availability' => true
         ]);
 
         Auth::login($user);
-
-        return redirect('/pandit/dashboard')->with('success', 'Pandit account created successfully!');
+        return redirect()->route('pandit.dashboard')->with('success', 'Pandit account created successfully!');
     }
 
     public function loginPandit(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $credentials = $request->validate([
             'email' => 'required|email',
-            'password' => 'required|min:6',
+            'password' => 'required'
         ]);
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
+        // Check if the user exists and has the correct role
+        $user = User::where('email', $credentials['email'])->first();
+        if (!$user || $user->role !== 'pandit') {
+            return back()->withErrors([
+                'email' => 'This email is not registered as a pandit. If you are a user, please use the regular login.',
+            ])->onlyInput('email');
         }
 
-        $user = User::where('email', $request->email)->where('role', 'pandit')->first();
-        if ($user && Hash::check($request->password, $user->password)) {
-            Auth::login($user, $request->has('remember'));
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect('/pandit/dashboard')->with('success', 'Welcome Pandit!');
+            return redirect()->route('pandit.dashboard');
         }
 
         return back()->withErrors([
-            'email' => 'Pandit email or password is incorrect, or you are not registered as a Pandit.'
-        ])->withInput($request->only('email'));
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
+    }
+
+    public function showUpdateProfile()
+    {
+        $user = Auth::user();
+        if ($user->role !== 'pandit') {
+            return redirect('/')->with('error', 'Unauthorized access');
+        }
+        return view('pandit.update-profile', ['user' => $user]);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->role !== 'pandit') {
+            return redirect('/')->with('error', 'Unauthorized access');
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'experience' => 'required|integer|min:0',
+            'specialization' => 'required|string|max:255',
+            'about' => 'nullable|string|max:1000',
+        ]);
+
+        // Update user details
+        $user->name = $validated['name'];
+        $user->phone = $validated['phone'];
+        $user->save();
+
+        // Update or create pandit details
+        $panditDetail = $user->panditDetail ?? new \App\Models\PanditDetail(['user_id' => $user->id]);
+        $panditDetail->experience = $validated['experience'];
+        $panditDetail->specialization = $validated['specialization'];
+        $panditDetail->about = $validated['about'];
+        $panditDetail->save();
+
+        return redirect()->route('pandit.profile.edit')
+            ->with('success', 'Profile updated successfully!');
     }
 } 
